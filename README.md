@@ -1,1 +1,9 @@
-# project-lvl2-s487
+# Hexlet Diff-Generator by Eldar Babaev
+
+# Setup
+
+$ make install
+ 
+# Start
+
+$ gendiff
