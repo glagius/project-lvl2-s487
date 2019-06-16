@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
@@ -20,7 +21,8 @@ module.exports = {
   // Indicates whether the coverage information should be collected while executing the test
   // collectCoverage: false,
 
-  // An array of glob patterns indicating a set of files for which coverage information should be collected
+  // An array of glob patterns indicating a set of files for which coverage
+  // information should be collected
   // collectCoverageFrom: null,
 
   // The directory where Jest should output its coverage files
@@ -51,7 +53,8 @@ module.exports = {
   // Force coverage collection from ignored files using an array of glob patterns
   // forceCoverageMatch: [],
 
-  // A path to a module which exports an async function that is triggered once before all test suites
+  // A path to a module which exports an async function that is triggered once
+  // before all test suites
   // globalSetup: null,
 
   // A path to a module which exports an async function that is triggered once after all test suites
@@ -75,10 +78,12 @@ module.exports = {
   //   "node"
   // ],
 
-  // A map from regular expressions to module names that allow to stub out resources with a single module
+  // A map from regular expressions to module names that allow to stub out
+  // resources with a single module
   // moduleNameMapper: {},
 
-  // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
+  // An array of regexp pattern strings, matched against all module paths
+  // before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
 
   // Activates notifications for test results
@@ -122,7 +127,8 @@ module.exports = {
   // The paths to modules that run some code to configure or set up the testing environment before each test
   // setupFiles: [],
 
-  // A list of paths to modules that run some code to configure or set up the testing framework before each test
+  // A list of paths to modules that run some code to configure or set up the
+  // testing framework before each test
   // setupFilesAfterEnv: [],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing

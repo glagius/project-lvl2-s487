@@ -1,14 +1,29 @@
-import fs from 'fs';
+// import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
-// __tests__/__fixtures__/newConfig1.json
-// __tests__/__fixtures__/newConfig2.json
+import JSONfile from './types/jsonType';
+import YMLfile from './types/yamlType';
+
+const getCurrentPath = filepath => (path.isAbsolute(filepath)
+  ? filepath
+  : path.resolve(__dirname, filepath));
+const getFileType = (filepath) => {
+  const type = (path.extname(filepath)
+    ? path.extname(filepath).slice(1)
+    : false);
+  console.log('Type = ', type);
+  const classesByType = {
+    json: () => new JSONfile(filepath),
+    yml: () => new YMLfile(filepath),
+    // ini: () => new INIfile(filepath),
+  };
+  return classesByType[type]();
+};
 
 export default (filepath1, filepath2) => {
   const compareResults = [];
-  const getCurrentPath = (filepath) => path.isAbsolute(filepath) ? filepath : path.resolve(__dirname, filepath);
-  const firstConfig = JSON.parse(fs.readFileSync(getCurrentPath(filepath1)));
-  const secondConfig = JSON.parse(fs.readFileSync(getCurrentPath(filepath2)))
+  const firstConfig = getFileType(getCurrentPath(filepath1)).readFile();
+  const secondConfig = getFileType(getCurrentPath(filepath2)).readFile();
   const objKeys = Object.keys({ ...firstConfig, ...secondConfig });
 
   const getDiff = (prop) => {
@@ -31,6 +46,6 @@ export default (filepath1, filepath2) => {
   };
 
   objKeys.forEach(prop => getDiff(prop));
-
+  console.log('resultArr = ', compareResults);
   return ['{', ...compareResults, '}'].join('\n');
 };

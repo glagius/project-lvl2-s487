@@ -9,6 +9,7 @@
 $ make install
  
 # Start
-You can use absolute and relative filepath. 
+You can use absolute and relative filepath.
+Now it supports .json and .yamls files (^_^)
 
 $ gendiff filepath1 filepath2
