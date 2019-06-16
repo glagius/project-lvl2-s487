@@ -7,6 +7,9 @@ start:
 lint:
 	npx eslint '.'
 
+test: 
+	npm run test
+
 publish: lint
 	npm publish
 

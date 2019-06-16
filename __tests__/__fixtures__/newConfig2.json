@@ -1,0 +1,5 @@
+{
+  "url": ".*kitchenaid.com\/.*\/(cart|checkout).*",
+  "total": 8979,
+  "newObj": 21
+}

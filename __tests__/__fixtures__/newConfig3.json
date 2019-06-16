@@ -1,0 +1,9 @@
+{
+  "url": ".*kitchenaid.com\/.*\/(cart|checkout).*",
+  "total": 8979,
+  "orderTotal": 789876,
+  "productName": "Apple MacBook",
+  "discount": "45$",
+  "errorMessage": "What is this?",
+  "newObj": 21
+}
