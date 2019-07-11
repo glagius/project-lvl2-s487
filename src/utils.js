@@ -11,11 +11,10 @@ const getFileType = (filepath) => {
   const type = (path.extname(filepath)
     ? path.extname(filepath).slice(1)
     : false);
-  console.log('Type = ', type);
   const classesByType = {
     json: () => new JSONfile(filepath),
     yml: () => new YMLfile(filepath),
-    // ini: () => new INIfile(filepath),
+    ini: () => new INIfile(filepath),
   };
   return classesByType[type]();
 };
@@ -23,7 +22,7 @@ const getFileType = (filepath) => {
 export default (filepath1, filepath2) => {
   const compareResults = [];
   const firstConfig = getFileType(getCurrentPath(filepath1)).readFile();
-  const secondConfig = getFileType(getCurrentPath(filepath2)).readFile();
+  const secondConfig = getFileType(getCurrentPath(filepath2)).readFile();в
   const objKeys = Object.keys({ ...firstConfig, ...secondConfig });
 
   const getDiff = (prop) => {
@@ -46,6 +45,5 @@ export default (filepath1, filepath2) => {
   };
 
   objKeys.forEach(prop => getDiff(prop));
-  console.log('resultArr = ', compareResults);
   return ['{', ...compareResults, '}'].join('\n');
 };
