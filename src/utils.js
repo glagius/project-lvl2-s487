@@ -3,18 +3,15 @@ import path from 'path';
 import _ from 'lodash';
 import JSONfile from './types/jsonType';
 import YMLfile from './types/yamlType';
+// import INIfile from './types/iniType';
 
-const getCurrentPath = filepath => (path.isAbsolute(filepath)
-  ? filepath
-  : path.resolve(__dirname, filepath));
+const getCurrentPath = fpath => (path.isAbsolute(fpath) ? fpath : path.resolve(__dirname, fpath));
 const getFileType = (filepath) => {
-  const type = (path.extname(filepath)
-    ? path.extname(filepath).slice(1)
-    : false);
+  const type = path.extname(filepath) ? path.extname(filepath).slice(1) : false;
   const classesByType = {
     json: () => new JSONfile(filepath),
     yml: () => new YMLfile(filepath),
-    ini: () => new INIfile(filepath),
+    // ini: () => new INIfile(filepath),
   };
   return classesByType[type]();
 };
@@ -22,7 +19,7 @@ const getFileType = (filepath) => {
 export default (filepath1, filepath2) => {
   const compareResults = [];
   const firstConfig = getFileType(getCurrentPath(filepath1)).readFile();
-  const secondConfig = getFileType(getCurrentPath(filepath2)).readFile();в
+  const secondConfig = getFileType(getCurrentPath(filepath2)).readFile();
   const objKeys = Object.keys({ ...firstConfig, ...secondConfig });
 
   const getDiff = (prop) => {
