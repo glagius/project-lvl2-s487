@@ -105,3 +105,55 @@ test('checkDiff yaml 4', () => {
     ),
   );
 });
+
+test('checkDiff ini 1', () => {
+  expect(
+    gendiff(
+      '../__tests__/__fixtures__/ini/oldConfig.ini',
+      '../__tests__/__fixtures__/ini/newConfig1.ini',
+    ),
+  ).toBe(
+    getResult(
+      '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/diffResult1.txt',
+    ),
+  );
+});
+
+test('checkDiff ini 2', () => {
+  expect(
+    gendiff(
+      '../__tests__/__fixtures__/ini/oldConfig.ini',
+      '../__tests__/__fixtures__/ini/newConfig2.ini',
+    ),
+  ).toBe(
+    getResult(
+      '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/diffResult2.txt',
+    ),
+  );
+});
+
+test('checkDiff ini 3', () => {
+  expect(
+    gendiff(
+      '../__tests__/__fixtures__/ini/oldConfig.ini',
+      '../__tests__/__fixtures__/ini/newConfig3.ini',
+    ),
+  ).toBe(
+    getResult(
+      '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/diffResult3.txt',
+    ),
+  );
+});
+
+test('checkDiff ini 4', () => {
+  expect(
+    gendiff(
+      '../__tests__/__fixtures__/ini/oldConfig.ini',
+      '../__tests__/__fixtures__/ini/newConfig4.ini',
+    ),
+  ).toBe(
+    getResult(
+      '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/diffResult4.txt',
+    ),
+  );
+});
