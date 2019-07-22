@@ -12,7 +12,7 @@ const getFileType = filepath => {
   const classesByType = {
     json: () => new JSONfile(filepath),
     yml: () => new YMLfile(filepath),
-    ini: () => new INIfile(filepath),
+    ini: () => new INIfile(filepath)
   };
   return classesByType[type]();
 };
@@ -31,7 +31,7 @@ export default (filepath1, filepath2) => {
         new: () => compareResults.push(`+${prop}:${newVal}`),
         old: () => compareResults.push(`${prop}:${oldVal}`),
         changed: () => compareResults.push(`+${prop}:${newVal}`, `-${prop}:${oldVal}`),
-        removed: () => compareResults.push(`-${prop}:${oldVal}`),
+        removed: () => compareResults.push(`-${prop}:${oldVal}`)
       };
       return stringsByType[type]();
     };
