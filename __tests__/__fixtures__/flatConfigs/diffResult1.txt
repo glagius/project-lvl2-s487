@@ -1,10 +1,10 @@
 {
-url:.*kitchenaid.com/.*/(cart|checkout).*
-+total:89
--total:8979
-+orderTotal:876
--orderTotal:789876
-productName:Apple MacBook
-errorMessage:What is this?
-newObj:21
+  url: .*kitchenaid.com/.*/(cart|checkout).*
+- total: 8979
++ total: 89
+- orderTotal: 789876
++ orderTotal: 876
+  productName: Apple MacBook
+  errorMessage: What is this?
+  newObj: 21
 }
