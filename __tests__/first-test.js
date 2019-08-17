@@ -12,7 +12,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult1.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult1.txt',
       ),
     );
   });
@@ -25,7 +25,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult2.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult2.txt',
       ),
     );
   });
@@ -38,7 +38,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult3.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult3.txt',
       ),
     );
   });
@@ -51,7 +51,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult4.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult4.txt',
       ),
     );
   });
@@ -64,7 +64,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult1.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult1.txt',
       ),
     );
   });
@@ -77,7 +77,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult2.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult2.txt',
       ),
     );
   });
@@ -90,7 +90,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult3.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult3.txt',
       ),
     );
   });
@@ -103,7 +103,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult4.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult4.txt',
       ),
     );
   });
@@ -116,7 +116,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult1.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult1.txt',
       ),
     );
   });
@@ -129,7 +129,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult2.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult2.txt',
       ),
     );
   });
@@ -142,7 +142,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult3.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult3.txt',
       ),
     );
   });
@@ -155,7 +155,7 @@ describe('Flat configs', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/flatConfigs/diffResult4.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/flatConfigs/diffResult4.txt',
       ),
     );
   });
@@ -169,11 +169,10 @@ describe('Nested blocks', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/nestedConfigs/diffResult1.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/diffResult1.txt',
       ),
     );
   });
-
   test('checkDiff json 2', () => {
     expect(
       renderDiff(
@@ -182,11 +181,10 @@ describe('Nested blocks', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/nestedConfigs/diffResult2.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/diffResult2.txt',
       ),
     );
   });
-
   test('checkDiff json 3', () => {
     expect(
       renderDiff(
@@ -195,11 +193,10 @@ describe('Nested blocks', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/nestedConfigs/diffResult3.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/diffResult3.txt',
       ),
     );
   });
-
   test('checkDiff json 4', () => {
     expect(
       renderDiff(
@@ -208,7 +205,55 @@ describe('Nested blocks', () => {
       ),
     ).toBe(
       getResult(
-        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/nestedConfigs/diffResult4.txt',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/diffResult4.txt',
+      ),
+    );
+  });
+  test('checkDiff yaml 1', () => {
+    expect(
+      renderDiff(
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/yaml/oldConfigNested.yml',
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/yaml/newConfigNested1.yml',
+      ),
+    ).toBe(
+      getResult(
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/diffResult1.txt',
+      ),
+    );
+  });
+  test('checkDiff yaml 2', () => {
+    expect(
+      renderDiff(
+        '../__tests__/__fixtures__/yaml/oldConfigNested.yml',
+        '../__tests__/__fixtures__/yaml/newConfigNested2.yml',
+      ),
+    ).toBe(
+      getResult(
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/diffResult2.txt',
+      ),
+    );
+  });
+  test('checkDiff yaml 3', () => {
+    expect(
+      renderDiff(
+        '../__tests__/__fixtures__/yaml/oldConfigNested.yml',
+        '../__tests__/__fixtures__/yaml/newConfigNested3.yml',
+      ),
+    ).toBe(
+      getResult(
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/diffResult3.txt',
+      ),
+    );
+  });
+  test('checkDiff yaml 4', () => {
+    expect(
+      renderDiff(
+        '../__tests__/__fixtures__/yaml/oldConfigNested.yml',
+        '../__tests__/__fixtures__/yaml/newConfigNested4.yml',
+      ),
+    ).toBe(
+      getResult(
+        '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/diffResult4.txt',
       ),
     );
   });
@@ -300,3 +345,54 @@ describe('unit test for parse / render functions', () => {
     expect(renderNode(compared)).toEqual(parsedResults.comparedObj);
   });
 });
+
+// describe('Test nested blocks for plain result', () => {
+//   test('Make plain diff for json1', () => {
+//     expect(
+//       renderDiff(
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/json/oldConfigNested.json',
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/json/newConfigNested1.json',
+//       ),
+//     ).toBe(
+//       getResult(
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/plainResult/diffResult1.txt',
+//       ),
+//     );
+//   });
+//   test('Make plain diff for json2', () => {
+//     expect(
+//       renderDiff(
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/json/oldConfigNested.json',
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/json/newConfigNested2.json',
+//       ),
+//     ).toBe(
+//       getResult(
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/plainResult/diffResult2.txt',
+//       ),
+//     );
+//   });
+//   test('Make plain diff for json3', () => {
+//     expect(
+//       renderDiff(
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/json/oldConfigNested.json',
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/json/newConfigNested3.json',
+//       ),
+//     ).toBe(
+//       getResult(
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/plainResult/diffResult3.txt',
+//       ),
+//     );
+//   });
+//   test('Make plain diff for json4', () => {
+//     expect(
+//       renderDiff(
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/json/oldConfigNested.json',
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/json/newConfigNested4.json',
+//       ),
+//     ).toBe(
+//       getResult(
+//         '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/results/nestedConfigs/plainResult/diffResult4.txt',
+//       ),
+//     );
+//   });
+// });

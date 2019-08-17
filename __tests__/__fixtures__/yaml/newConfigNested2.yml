@@ -1,0 +1,13 @@
+url: ".*kitchenaid.com\/.*\/(cart|checkout).*"
+total: 8979
+orderTotal: 789876
+product:
+  productName: 'Apple MacBook'
+  year: 2019
+  models:
+    - name: 'Air'
+      price: 190000
+  options:
+    option1: 'one'
+errorMessage: 'What is this?'
+newObj: 21

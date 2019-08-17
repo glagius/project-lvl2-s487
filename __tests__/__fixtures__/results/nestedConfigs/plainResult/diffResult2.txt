@@ -1,0 +1,2 @@
+Property 'product.models[1]' was removed
+Property 'product.options.option2' was removed
