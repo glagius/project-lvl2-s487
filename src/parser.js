@@ -1,5 +1,5 @@
 import nodeTypes from './types/nodeTypes';
-import { defaultRender, plainRender } from './renders';
+import { defaultRender } from './renders';
 
 // const addKeyPath = (item, keys = []) => {
 //   const { type, key, value } = item;
