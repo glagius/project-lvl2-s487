@@ -1,40 +1,31 @@
 // change to function witch gonna take function as argument for method 'toString'
 const nodeTypes = {
-  // state can be 'added, deleted, current'
-  simple: ({ value, key, depth, status }, methods) => ({
+  // state can be 'added, removed, current'
+  simple: ({ value, key, depth, status, ...args }) => ({
     type: 'simple',
     value,
     key,
     depth,
     status: status || 'current',
-    ...methods,
-    // toString() {
-    //   return renderString(this);
-    // },
+    ...args,
   }),
-  object: ({ value, key, depth, status }, methods) => ({
+  object: ({ value, key, depth, status, ...args }) => ({
     type: 'object',
     value,
     hasChildren: true,
     key,
     depth,
     status: status || 'current',
-    ...methods,
-    // toString() {
-    //   return objToString(this);
-    // },
+    ...args,
   }),
-  array: ({ value, key, depth, status }, methods) => ({
+  array: ({ value, key, depth, status, ...args }) => ({
     type: 'array',
     value,
     hasChildren: true,
     key,
     depth,
     status: status || 'current',
-    ...methods,
-    // toString() {
-    //   return arrToString(this);
-    // },
+    ...args,
   }),
 };
 // node is parent of node with key;

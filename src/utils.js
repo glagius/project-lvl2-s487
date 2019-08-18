@@ -18,12 +18,15 @@ const getFileType = filepath => {
   };
   return classesByType[type]();
 };
-const renderNode = item => item.toString();
+const renderNode = item => item.toString(item);
 
-const renderDiff = (filepath1, filepath2) => {
+const renderDiff = (type = 'nested') => (filepath1, filepath2) => {
   const firstConfig = getFileType(getCurrentPath(filepath1)).readFile();
   const secondConfig = getFileType(getCurrentPath(filepath2)).readFile();
-  const comparedConfig = compareNodes(parseItem(firstConfig), parseItem(secondConfig));
+  const comparedConfig = compareNodes(type)(
+    parseItem(firstConfig),
+    parseItem(secondConfig),
+  );
   return renderNode(comparedConfig);
 };
 export { renderDiff, renderNode };

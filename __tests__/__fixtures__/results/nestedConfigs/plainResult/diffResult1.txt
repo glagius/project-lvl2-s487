@@ -1,3 +1,6 @@
-Property 'product.models[0].colors' was added with value: [1, 2, 3]
-Property 'product.models[1].colors' was added with value: [1, 2]
+Property 'product.models.['0'].colors.['0']' was added with value: '1'
+Property 'product.models.['0'].colors.['1']' was added with value: '2'
+Property 'product.models.['0'].colors.['2']' was added with value: '3'
+Property 'product.models.['1'].colors.['0']' was added with value: '1'
+Property 'product.models.['1'].colors.['1']' was added with value: '2'
 Property 'product.options.option3' was added with value: 'three'
