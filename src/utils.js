@@ -1,4 +1,5 @@
 // import fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 // import _ from 'lodash';
 import JSONfile from './types/jsonType';
@@ -6,8 +7,9 @@ import YMLfile from './types/yamlType';
 import INIfile from './types/iniType';
 import { parseItem, compareNodes } from './parser';
 
-const getCurrentPath = filename =>
-  path.isAbsolute(filename) ? filename : path.resolve(__dirname, filename);
+const getCurrentPath = filename => {
+  return path.isAbsolute(filename) ? filename : path.resolve(__dirname, filename);
+};
 
 const getFileType = filepath => {
   const type = path.extname(filepath) ? path.extname(filepath).slice(1) : false;
@@ -19,14 +21,20 @@ const getFileType = filepath => {
   return classesByType[type]();
 };
 const renderNode = item => item.toString(item);
+const saveToFile = (config, destination) => {
+  try {
+    const filename = 'diff.json';
+    const filepath = path.join(getCurrentPath(destination), filename);
+    fs.writeFileSync(filepath, config, { flag: 'a' });
+    console.log('Config = ', config, '\nsaved in ', filepath);
+  } catch (err) {
+    console.log('Shit happened = ', err);
+  }
+};
 
-const renderDiff = (type = 'nested') => (filepath1, filepath2) => {
+const getComparedConfig = type => (filepath1, filepath2) => {
   const firstConfig = getFileType(getCurrentPath(filepath1)).readFile();
   const secondConfig = getFileType(getCurrentPath(filepath2)).readFile();
-  const comparedConfig = compareNodes(type)(
-    parseItem(firstConfig),
-    parseItem(secondConfig),
-  );
-  return renderNode(comparedConfig);
+  return compareNodes(type)(parseItem(firstConfig), parseItem(secondConfig));
 };
-export { renderDiff, renderNode };
+export { getComparedConfig, renderNode, saveToFile };

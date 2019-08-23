@@ -10,17 +10,17 @@
         name: Air
         price: 190000
       + colors: [
-          1
-          2
-          3
+        + 1
+        + 2
+        + 3
         ]
       }
       {
         name: Pro
         price: 290000
       + colors: [
-          1
-          2
+        + 1
+        + 2
         ]
       }
     ]

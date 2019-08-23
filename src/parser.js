@@ -1,64 +1,43 @@
 import nodeTypes from './types/nodeTypes';
 import { defaultRender, plainRender } from './renders';
 
-const parseKeys = keys =>
-  keys
-    .map(key => {
-      return typeof key === 'number' || typeof key === 'number' ? `['${key}']` : key;
-    })
-    .slice(1)
-    .join('.');
-const addKeyPath = (item, keys = []) => {
-  const { type, key, value } = item;
-  // if (type === 'simple') return Object.assign({}, item, { key: [...keys, key] });
-  if (type === 'simple') return { ...item, key: parseKeys([...keys, key]) };
-  // переделать
-  // return Object.assign({}, item, {
-  //   key: [...keys, key],
-  //   value: value.map(el => addKeyPath(el, [...keys, key])),
-  // });
-  //
-  return {
-    ...item,
-    key: parseKeys([...keys, key]),
-    value: value.map(el => addKeyPath(el, [...keys, key])),
-  };
-};
-const parseObject = (obj, depth, func) => {
+const parseObject = (obj, key, depth, func) => {
   const keys = Object.keys(obj);
-  return keys.map(el => func(obj, el, depth));
+  return keys.map(el => func(obj, [...key, el], depth));
 };
-const parseArray = (arr, depth, func) => arr.map((el, index) => func(el, index, depth));
-const parseItem = (item, key = '/', depth = 0) => {
+const parseArray = (arr, key, depth, func) =>
+  arr.map((el, index) => func(el, [...key, index], depth));
+
+const parseItem = (item, keyPath, depth = 0) => {
+  const lastKey = keyPath ? keyPath[keyPath.length - 1] : '/';
   // change to lodash method
   const getValueType = value => {
     if (value === null || typeof value !== 'object') return 'simple';
     return value instanceof Array ? 'array' : 'object';
   };
   const valueTypes = {
-    simple: val => val,
-    object: (val, depthLvl) => parseObject(val, depthLvl, parseItem),
-    array: (val, depthLvl) => parseArray(val, depthLvl, parseItem),
+    simple: element => element,
+    object: (obj, objKey, depthLvl) => parseObject(obj, objKey, depthLvl, parseItem),
+    array: (arr, arrKey, depthLvl) => parseArray(arr, arrKey, depthLvl, parseItem),
   };
   const indent = 2;
   const newDepth = depth + indent;
   let itemValue;
 
-  if (key === '/') {
-    itemValue = valueTypes.object(item, depth);
-    const options = { value: itemValue, key, depth };
+  if (lastKey === '/') {
+    itemValue = valueTypes.object(item, [lastKey], depth);
+    const options = { value: itemValue, key: [lastKey], depth };
     return nodeTypes.object(options);
   }
-  if (typeof key === 'number') {
+  if (typeof lastKey === 'number') {
     const type = getValueType(item);
-    itemValue = valueTypes[type](item, newDepth);
-    const options = { value: itemValue, key, depth: newDepth };
-    // change logic in arrayParser
+    itemValue = valueTypes[type](item, [...keyPath], newDepth);
+    const options = { value: itemValue, key: [...keyPath], depth: newDepth };
     return nodeTypes[type](options);
   }
-  const type = getValueType(item[key]);
-  itemValue = valueTypes[type](item[key], newDepth);
-  const options = { value: itemValue, key, depth: newDepth };
+  const type = getValueType(item[lastKey]);
+  itemValue = valueTypes[type](item[lastKey], [...keyPath], newDepth);
+  const options = { value: itemValue, key: [...keyPath], depth: newDepth };
   return nodeTypes[type](options);
 };
 const compareNodes = renderType => (oldObj, newObj) => {
@@ -66,14 +45,8 @@ const compareNodes = renderType => (oldObj, newObj) => {
     nested: defaultRender,
     plain: plainRender,
   };
-  let oldNode;
-  let newNode;
-  if (renderType === 'plain') {
-    oldNode = addKeyPath(oldObj);
-    newNode = addKeyPath(newObj);
-  }
   const getNodeByKey = (node, key) => {
-    const item = node.value.find(obj => obj.key === key);
+    const item = node.value.find(obj => obj.key.join('.') === key);
     return item && { ...item, ...renderMethods[renderType][item.type] };
   };
   const changeNestedNodes = (node, status) => {
@@ -88,10 +61,11 @@ const compareNodes = renderType => (oldObj, newObj) => {
   };
   const compare = (previous, current) => {
     if (!previous) {
-      const changedCurrNode = {
-        ...changeNestedNodes(current, 'added'),
-      };
-      return [changedCurrNode];
+      return [
+        {
+          ...changeNestedNodes(current, 'added'),
+        },
+      ];
     }
     if (!current) {
       return [{ ...changeNestedNodes(previous, 'removed') }];
@@ -121,7 +95,7 @@ const compareNodes = renderType => (oldObj, newObj) => {
     }
 
     const mergedValues = [...oldValue, ...newValue];
-    const sortedMergValues = mergedValues.map(el => el.key);
+    const sortedMergValues = mergedValues.map(el => el.key).map(key => key.join('.'));
     let values = mergedValues;
 
     if (sortedMergValues.length > 1) {
@@ -140,6 +114,6 @@ const compareNodes = renderType => (oldObj, newObj) => {
     };
     return [nodeTypes[newType](newCurr)];
   };
-  return compare(oldNode || oldObj, newNode || newObj)[0];
+  return compare(oldObj, newObj)[0];
 };
 export { parseItem, compareNodes };

@@ -15,9 +15,9 @@
         price: 290000
       }
     + {
-        name: Air
-        price: 150000
-        discount: true
+      + name: Air
+      + price: 150000
+      + discount: true
       }
     ]
     options: {
