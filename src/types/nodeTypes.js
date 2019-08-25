@@ -1,27 +1,18 @@
 const nodeTypes = {
-  simple: ({ value, key, depth, status, ...args }) => ({
+  simple: ({ status, ...args }) => ({
     type: 'simple',
-    value,
-    key,
-    depth,
     status: status || 'current',
     ...args,
   }),
-  object: ({ value, key, depth, status, ...args }) => ({
+  object: ({ status, ...args }) => ({
     type: 'object',
-    value,
     hasChildren: true,
-    key,
-    depth,
     status: status || 'current',
     ...args,
   }),
-  array: ({ value, key, depth, status, ...args }) => ({
+  array: ({ status, ...args }) => ({
     type: 'array',
-    value,
     hasChildren: true,
-    key,
-    depth,
     status: status || 'current',
     ...args,
   }),

@@ -7,13 +7,12 @@ const parseObject = (obj, key, depth, func) => {
 const parseArray = (arr, key, depth, func) =>
   arr.map((el, index) => func(el, [...key, index], depth));
 
+const getValueType = value => {
+  if (value === null || typeof value !== 'object') return 'simple';
+  return value instanceof Array ? 'array' : 'object';
+};
 const parseItem = (item, keyPath, depth = 0) => {
   const lastKey = keyPath ? keyPath[keyPath.length - 1] : '/';
-  // change to lodash method
-  const getValueType = value => {
-    if (value === null || typeof value !== 'object') return 'simple';
-    return value instanceof Array ? 'array' : 'object';
-  };
   const valueTypes = {
     simple: element => element,
     object: (obj, objKey, depthLvl) => parseObject(obj, objKey, depthLvl, parseItem),

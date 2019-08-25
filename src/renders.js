@@ -8,38 +8,46 @@ const defaultRender = ({ value, key, depth, status, type }) => {
   const sign = statusSign[status] || '';
   const whiteSpace = ' ';
   const indentSign = depth > 0 ? whiteSpace.repeat(depth - 2) : whiteSpace.repeat(depth);
+
   const putIndent = diffSign => (diffSign ? indentSign : whiteSpace.repeat(depth));
+  const renderArray = itemKey => {
+    if (isNum(itemKey)) {
+      return ['[\n', ...value.map(el => defaultRender(el)), `\n]`].join('');
+    }
+    return [
+      `\n${putIndent(sign)}${sign}${itemKey}: [`,
+      ...value.map(el => defaultRender(el)),
+      `\n${putIndent(null)}]`,
+    ].join('');
+  };
+  const renderObject = itemKey => {
+    if (isNum(itemKey)) {
+      return [
+        `\n${putIndent(sign)}${sign}{`,
+        ...value.map(el => defaultRender(el)),
+        `\n${putIndent(null)}}`,
+      ].join('');
+    }
+    return [
+      `\n${putIndent(sign)}${sign}${lastKey}: {`,
+      ...value.map(el => defaultRender(el)),
+      `\n${putIndent(null)}}`,
+    ].join('');
+  };
+  const renderSimple = itemKey => {
+    if (isNum(itemKey)) {
+      return `\n${putIndent(sign)}${sign}${value}`;
+    }
+    return `\n${putIndent(sign)}${sign}${lastKey}: ${value}`;
+  };
   if (lastKey === '/') {
     const result = [`{`, ...value.map(el => defaultRender(el)), `\n}`].join('');
     return result;
   }
-  if (isNum(lastKey)) {
-    const rendersByType = {
-      object: () =>
-        [
-          `\n${putIndent(sign)}${sign}{`,
-          ...value.map(el => defaultRender(el)),
-          `\n${putIndent(null)}}`,
-        ].join(''),
-      array: () => ['[\n', ...value.map(el => defaultRender(el)), `\n]`].join(''),
-      simple: () => `\n${putIndent(sign)}${sign}${value}`,
-    };
-    return rendersByType[type]();
-  }
   const rendersByType = {
-    object: () =>
-      [
-        `\n${putIndent(sign)}${sign}${lastKey}: {`,
-        ...value.map(el => defaultRender(el)),
-        `\n${putIndent(null)}}`,
-      ].join(''),
-    array: () =>
-      [
-        `\n${putIndent(sign)}${sign}${lastKey}: [`,
-        ...value.map(el => defaultRender(el)),
-        `\n${putIndent(null)}]`,
-      ].join(''),
-    simple: () => `\n${putIndent(sign)}${sign}${lastKey}: ${value}`,
+    object: () => renderObject(lastKey),
+    array: () => renderArray(lastKey),
+    simple: () => renderSimple(lastKey),
   };
   return rendersByType[type]();
 };
