@@ -6,10 +6,13 @@
 
 # Setup
 
-$ make install
- 
-# Start
-You can use absolute and relative filepath.
-Now it supports .json and .yamls files (^_^)
+\$ make install
 
-$ gendiff filepath1 filepath2
+# Start
+
+You can use absolute and relative filepath. Now it supports json/yml/ini files (^\_^)
+
+More about this package you can get from asciinema.
+[![asciicast](https://asciinema.org/a/264201.svg)](https://asciinema.org/a/264201)
+
+\$ gendiff filepath1 filepath2

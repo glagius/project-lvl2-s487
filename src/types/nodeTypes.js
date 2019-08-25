@@ -1,6 +1,4 @@
-// change to function witch gonna take function as argument for method 'toString'
 const nodeTypes = {
-  // state can be 'added, removed, current'
   simple: ({ value, key, depth, status, ...args }) => ({
     type: 'simple',
     value,
@@ -28,11 +26,5 @@ const nodeTypes = {
     ...args,
   }),
 };
-// node is parent of node with key;
-
-// just for old Node version.
-// const addOptions = (obj, options) => Object.assign({}, obj, options);
-
-// change spread literalt to mutable state;
 
 export default nodeTypes;
