@@ -1,5 +1,6 @@
 import { version } from '../package.json';
-import { getComparedConfig, renderNode, saveToFile } from './utils';
+import getComparedConfig from './utils';
+import renderNode from './renders';
 
 const program = require('commander');
 
@@ -8,19 +9,13 @@ export default () => {
     .version(version)
     .description('Compares two configuration files and shows a difference.')
     .arguments('<firstConfig> <secondConfig>')
-    .option('-f, --format <type>', 'Output format, and destination, if "type" is "json"')
-    .option('-s, --save [destination]', 'Save diff in "destination" directory')
+    .option('-f, --format <type>', 'Output format. Can be "nested", "plain", "json"')
     .action((firstConfig, secondConfig, cmdObj) => {
       const renderType = cmdObj.format;
-      const destination = cmdObj.save;
-      const diff = getComparedConfig(renderType || 'nested')(firstConfig, secondConfig);
+      const diff = getComparedConfig(firstConfig, secondConfig);
 
-      if (destination) {
-        saveToFile(diff, destination);
-        return;
-      }
-
-      console.log(renderNode(diff));
+      if (renderType === 'json') return renderNode(diff, renderType);
+      return console.log(renderNode(diff, renderType || 'nested'));
     })
     .parse(process.argv);
   if (!program.args.length) program.help();

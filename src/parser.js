@@ -1,5 +1,4 @@
 import nodeTypes from './types/nodeTypes';
-import { defaultRender, plainRender } from './renders';
 
 const parseObject = (obj, key, depth, func) => {
   const keys = Object.keys(obj);
@@ -40,14 +39,10 @@ const parseItem = (item, keyPath, depth = 0) => {
   const options = { value: itemValue, key: [...keyPath], depth: newDepth };
   return nodeTypes[type](options);
 };
-const compareNodes = renderType => (oldObj, newObj) => {
-  const renderMethods = {
-    nested: defaultRender,
-    plain: plainRender,
-  };
+const compareNodes = (oldObj, newObj) => {
   const getNodeByKey = (node, key) => {
     const item = node.value.find(obj => obj.key.join('.') === key);
-    return item && { ...item, ...renderMethods[renderType][item.type] };
+    return item;
   };
   const changeNestedNodes = (node, status) => {
     return node.value instanceof Array
@@ -55,9 +50,8 @@ const compareNodes = renderType => (oldObj, newObj) => {
           ...node,
           status,
           value: node.value.map(item => changeNestedNodes(item, status)),
-          ...renderMethods[renderType][node.type],
         }
-      : { ...node, status, ...renderMethods[renderType][node.type] };
+      : { ...node, status };
   };
   const compare = (previous, current) => {
     if (!previous) {
@@ -110,7 +104,6 @@ const compareNodes = renderType => (oldObj, newObj) => {
     const newCurr = {
       ...current,
       value: checkedNode,
-      ...renderMethods[renderType][current.type],
     };
     return [nodeTypes[newType](newCurr)];
   };
