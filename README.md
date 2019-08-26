@@ -2,6 +2,8 @@
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/5917071b2eba60c05411/test_coverage)](https://codeclimate.com/github/BabayevEldar/project-lvl2-s487/test_coverage)
 
+[![Build Status](https://travis-ci.org/BabayevEldar/project-lvl2-s487.svg?branch=master)](https://travis-ci.org/BabayevEldar/project-lvl2-s487)
+
 # Hexlet Diff-Generator by Eldar Babaev
 
 # Setup
