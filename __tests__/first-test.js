@@ -64,7 +64,7 @@ describe('Test engine workflow', () => {
   test('Get AST in JSON', async () => {
     const comparedConfig = getComparedConfig(
       oldConfigs.flat.json,
-      '/home/glagius/WorkProjects/hexlet/project2/__tests__/__fixtures__/json/flatConfig0.json',
+      './__tests__/__fixtures__/json/flatConfig0.json',
     );
     expect(renderNode(comparedConfig, 'json')).toBe(JSON.stringify(comparedConfig));
   });
