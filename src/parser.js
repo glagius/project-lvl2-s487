@@ -38,20 +38,20 @@ const parseItem = (item, keyPath, depth = 0) => {
   const options = { value: itemValue, key: [...keyPath], depth: newDepth };
   return nodeTypes[type](options);
 };
+const getNodeByKey = (node, key) => {
+  const item = node.value.find(obj => obj.key.join('.') === key);
+  return item;
+};
+const changeNestedNodes = (node, status) => {
+  return node.value instanceof Array
+    ? {
+        ...node,
+        status,
+        value: node.value.map(item => changeNestedNodes(item, status)),
+      }
+    : { ...node, status };
+};
 const compareNodes = (oldObj, newObj) => {
-  const getNodeByKey = (node, key) => {
-    const item = node.value.find(obj => obj.key.join('.') === key);
-    return item;
-  };
-  const changeNestedNodes = (node, status) => {
-    return node.value instanceof Array
-      ? {
-          ...node,
-          status,
-          value: node.value.map(item => changeNestedNodes(item, status)),
-        }
-      : { ...node, status };
-  };
   const compare = (previous, current) => {
     if (!previous) {
       return [
@@ -65,7 +65,6 @@ const compareNodes = (oldObj, newObj) => {
     }
     const { value: oldValue, type: oldType } = previous;
     const { value: newValue, type: newType } = current;
-    // works when keys are equal
     const typesEqual = oldType === newType;
     const valuesEqual = oldValue === newValue;
 

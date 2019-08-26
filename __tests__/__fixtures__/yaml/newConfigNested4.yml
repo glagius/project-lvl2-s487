@@ -7,8 +7,9 @@ product:
   models:
     - name: 'Air'
       price: 190000
-    - name: 'Pro'
-      price: 290000
+    - name: 'Air'
+      price: 150000
+      discount: true
   options:
     option1: 'four'
     option2: 'four'

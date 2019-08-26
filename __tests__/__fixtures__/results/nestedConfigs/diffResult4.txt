@@ -13,8 +13,11 @@
         price: 190000
       }
       {
-        name: Pro
-        price: 290000
+      - name: Pro
+      + name: Air
+      - price: 290000
+      + price: 150000
+      + discount: true
       }
     ]
     options: {

@@ -1,5 +1,8 @@
 Property 'total' was updated. From '8979' to '89'
 Property 'orderTotal' was updated. From '789876' to '76'
+Property 'product.models.['1'].name' was updated. From 'Pro' to 'Air'
+Property 'product.models.['1'].price' was updated. From '290000' to '150000'
+Property 'product.models.['1'].discount' was added with value: 'true'
 Property 'product.options.option1' was updated. From 'one' to 'four'
 Property 'product.options.option2' was updated. From 'two' to 'four'
 Property 'product.options.option3' was added with value: 'four'
