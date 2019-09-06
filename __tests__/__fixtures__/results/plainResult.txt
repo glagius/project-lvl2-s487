@@ -1,6 +1,5 @@
 Property 'total' was updated. From '8979' to '89'
 Property 'orderTotal' was updated. From '789876' to '76'
-Property 'season' was added with value: 'Summer'
 Property 'product.productName' was removed
 Property 'product.models.pro.price' was updated. From '290000' to '150000'
 Property 'product.models.pro.discount' was added with value: 'true'
@@ -8,3 +7,4 @@ Property 'product.models.pro.['best-price']' was added with value: 'true'
 Property 'product.options.option1' was updated. From 'one' to 'four'
 Property 'product.options.option2' was updated. From 'two' to 'four'
 Property 'product.options.option3' was added with value: 'four'
+Property 'season' was added with value: 'Summer'

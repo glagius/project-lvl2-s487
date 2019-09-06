@@ -4,7 +4,6 @@
 + total: 89
 - orderTotal: 789876
 + orderTotal: 76
-+ season: Summer
   product: {
   - productName: Apple MacBook
     year: 2019
@@ -27,4 +26,5 @@
     + option3: four
     }
   }
++ season: Summer
 }

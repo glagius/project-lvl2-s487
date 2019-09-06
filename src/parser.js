@@ -48,10 +48,6 @@ const parseItem = (item, keyPath, depth = 0) => {
   const options = { value: itemValue, key: [...keyPath], depth: newDepth };
   return nodeTypes[type](options);
 };
-// const getNodeByKey = (node, key) => {
-//   const item = node.value.find(obj => obj.key.join('.') === key);
-//   return item;
-// };
 const changeNestedNodes = (node, status) => (node.value instanceof Array
   ? {
     ...node,
@@ -62,16 +58,20 @@ const changeNestedNodes = (node, status) => (node.value instanceof Array
     ...node,
     status,
   });
+const isEqual = (node1, node2, property) => {
+  const props = {
+    type: () => node1.type === node2.type,
+    path: () => parsePath(node1.key) === parsePath(node2.key),
+    value: () => node1.type === node2.type && node1.type === 'simple' && node1.value === node2.value,
+  };
+  return props[property]();
+};
 const compareNodes = (oldObj, newObj) => {
-  const getMergedValue = (prevVal, newVal) => {
-    console.log('prevVal = ', prevVal, '\nnewVal = ', newVal);
-    const comparedValue = prevVal.reduce((acc, prevEl, ind) => {
-      console.log('Acc = ', acc);
-      const newEl = newVal[ind];
-      const isValuesEqual = prevEl.value === newEl.value;
-      const prevElPath = parsePath(prevEl.key);
-      const newElPath = parsePath(newEl.key);
-      if (prevElPath !== newElPath || prevEl.type !== newEl.type) {
+  const getMergedValue = (prevValue, newValue) => {
+    const comparedValue = prevValue.reduce((acc, prevEl) => {
+      const newEl = newValue.find(el => parsePath(el.key) === parsePath(prevEl.key));
+      if (!newEl) return [...acc, changeNestedNodes(prevEl, 'removed')];
+      if (!isEqual(prevEl, newEl, 'path') || !isEqual(prevEl, newEl, 'type')) {
         return [
           ...acc,
           changeNestedNodes(prevEl, 'removed'),
@@ -79,8 +79,7 @@ const compareNodes = (oldObj, newObj) => {
         ];
       }
       if (prevEl.type === 'simple') {
-        console.log('Type is = ', prevEl.type, '\npath is = ', prevElPath, newElPath);
-        return isValuesEqual
+        return isEqual(prevEl, newEl, 'value')
           ? [...acc, prevEl]
           : [
             ...acc,
@@ -88,75 +87,19 @@ const compareNodes = (oldObj, newObj) => {
             changeNestedNodes(newEl, 'added'),
           ];
       }
-      console.log('Type2 is = ', prevEl.type, '\npath2 is = ', prevElPath, newElPath);
-      return [...acc, ...getMergedValue(prevEl.value, newEl.value)];
+      return [...acc, { ...prevEl, value: getMergedValue(prevEl.value, newEl.value) }];
     }, []);
-    const getRest = (array, target) => array.slice();
-    console.log('ComparedVal = ', comparedValue);
-    console.log('new Rest = ', newVal);
-    // console.log('Result = ', [
-    //   ...comparedValue,
-    //   ...newVal.slice(comparedValue.length - 1),
-    // ]);
-    return [...comparedValue, ...newVal.map(el => changeNestedNodes(el, 'added'))];
+    const newValRest = newValue.filter(
+      el => !comparedValue.find(
+        val => isEqual(el, val, 'path'),
+      ),
+    ).map(el => changeNestedNodes(el, 'added'));
+    return [...comparedValue, ...newValRest];
   };
   return {
     ...oldObj,
     ...newObj,
     value: getMergedValue(oldObj.value, newObj.value),
   };
-  // const compare = (previous, current) => {
-  //   if (!previous) {
-  //     return [
-  //       {
-  //         ...changeNestedNodes(current, 'added'),
-  //       },
-  //     ];
-  //   }
-  //   if (!current) {
-  //     return [{ ...changeNestedNodes(previous, 'removed') }];
-  //   }
-  //   const { value: oldValue, type: oldType } = previous;
-  //   const { value: newValue, type: newType } = current;
-  //   const typesEqual = oldType === newType;
-  //   const isValuesEqual = oldValue === newValue;
-
-  //   if (!typesEqual) {
-  //     const changedPrev = {
-  //       ...previous,
-  //       status: 'removed',
-  //     };
-  //     const newCurr = {
-  //       ...current,
-  //       status: 'added',
-  //     };
-  //     return [changedPrev, newCurr];
-  //   }
-  //   if (typesEqual && newType === 'simple') {
-  //     const changedPrev = { ...changeNestedNodes(previous, 'removed') };
-  //     const changedCurrent = { ...changeNestedNodes(current, 'added') };
-  //     const result = valuesEqual ? [current] : [changedPrev, changedCurrent];
-  //     return result;
-  //   }
 };
-//   const mergedValues = [...oldValue, ...newValue];
-//   const sortedMergValues = mergedValues.map(el => el.key).map(key => key.join('.'));
-//   let values = mergedValues;
-
-//   if (sortedMergValues.length > 1) {
-//     values = new Set(sortedMergValues);
-//   }
-
-//   const checkedNode = [...values].reduce((acc, key) => {
-//     const previousNode = getNodeByKey(previous, key);
-//     const currentNode = getNodeByKey(current, key);
-//     return [...acc, ...compare(previousNode, currentNode)];
-//   }, []);
-//   const newCurr = {
-//     ...current,
-//     value: checkedNode,
-//   };
-//   return [nodeTypes[newType](newCurr)];
-// };
-// return compare(oldObj, newObj)[0];
 export { parsePath, parseItem, compareNodes };
