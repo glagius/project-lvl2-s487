@@ -1,18 +1,20 @@
-plugins: [babel, jest]
+plugins:
+  # https://github.com/jest-community/eslint-plugin-jest
+  - jest
+  # https://github.com/babel/eslint-plugin-babel
+  - babel
+# https://eslint.org/docs/user-guide/configuring#specifying-environments
 env:
   node: true
-  es6: true
   jest: true
 
-extends: 
-  - 'eslint:recommended'
+# https://github.com/babel/babel-eslint
+parser: babel-eslint
+
+extends:
   - 'airbnb-base'
-  - 'prettier'
+  - 'plugin:jest/recommended'
+  - 'plugin:lodash-fp/recommended'
 
-parserOptions:
-  ecmaVersion: 2018
-  sourceType: module
-
-rules: {
-  no-console: 'off',
-}
+rules:
+  no-console: 0

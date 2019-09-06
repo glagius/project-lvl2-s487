@@ -1,18 +1,17 @@
 url: ".*kitchenaid.com\/.*\/(cart|checkout).*"
 total: 89
 orderTotal: 76
+season: 'Summer'
 product:
-  productName: 'Apple MacBook'
   year: 2019
   models:
-    - name: 'Air'
+    air:
       price: 190000
-    - name: 'Air'
+    pro:
       price: 150000
       discount: true
+      best-price: true
   options:
     option1: 'four'
     option2: 'four'
     option3: 'four'
-errorMessage: 'What is this?'
-newObj: 21

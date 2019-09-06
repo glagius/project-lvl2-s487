@@ -1,3 +1,0 @@
-Property 'product.models.['1'].name' was removed
-Property 'product.models.['1'].price' was removed
-Property 'product.options.option2' was removed

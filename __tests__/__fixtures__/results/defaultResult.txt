@@ -4,22 +4,21 @@
 + total: 89
 - orderTotal: 789876
 + orderTotal: 76
++ season: Summer
   product: {
-    productName: Apple MacBook
+  - productName: Apple MacBook
     year: 2019
-    models: [
-      {
-        name: Air
+    models: {
+      air: {
         price: 190000
       }
-      {
-      - name: Pro
-      + name: Air
+      pro: {
       - price: 290000
       + price: 150000
       + discount: true
+      + best-price: true
       }
-    ]
+    }
     options: {
     - option1: one
     + option1: four
@@ -28,6 +27,4 @@
     + option3: four
     }
   }
-  errorMessage: What is this?
-  newObj: 21
 }
