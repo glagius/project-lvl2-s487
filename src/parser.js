@@ -72,20 +72,13 @@ const compareNodes = (oldObj, newObj) => {
       const newEl = newValue.find(el => parsePath(el.key) === parsePath(prevEl.key));
       if (!newEl) return [...acc, changeNestedNodes(prevEl, 'removed')];
       if (!isEqual(prevEl, newEl, 'path') || !isEqual(prevEl, newEl, 'type')) {
-        return [
-          ...acc,
-          changeNestedNodes(prevEl, 'removed'),
-          changeNestedNodes(newEl, 'added'),
-        ];
+        return [...acc, changeNestedNodes(prevEl, 'removed'), changeNestedNodes(newEl, 'added')];
       }
       if (prevEl.type === 'simple') {
         return isEqual(prevEl, newEl, 'value')
           ? [...acc, prevEl]
-          : [
-            ...acc,
-            changeNestedNodes(prevEl, 'removed'),
-            changeNestedNodes(newEl, 'added'),
-          ];
+          : [...acc, changeNestedNodes(prevEl, 'removed'),
+            changeNestedNodes(newEl, 'added')];
       }
       return [...acc, { ...prevEl, value: getMergedValue(prevEl.value, newEl.value) }];
     }, []);
