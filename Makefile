@@ -1,7 +1,7 @@
-install: 
+install:
 	npm install
 
-start: 
+start:
 	npx babel-node 'src/bin/gendiff.js'
 
 build:
@@ -10,7 +10,7 @@ build:
 lint:
 	npx eslint '.'
 
-test: 
+test:
 	npm test
 
 test-coverage:
@@ -22,7 +22,7 @@ publish: lint
 publish-dry: lint
 	npm publish --dry-run
 
-install-local: 
+install-local:
 	npm run build
 	cd dist
-	sudo npm link
+	npm link
