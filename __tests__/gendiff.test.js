@@ -1,5 +1,5 @@
 import fs from 'fs';
-import genDiff from '../src/index';
+import genDiff from '..';
 
 const getText = filepath => fs.readFileSync(filepath, 'utf8');
 

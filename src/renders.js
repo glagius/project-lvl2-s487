@@ -5,15 +5,16 @@ const statusSign = {
   removed: '- ',
 };
 const isNum = str => typeof str === 'number';
+const whiteSpaceAmount = 2;
+const whiteSpace = ' ';
+
 const defaultRender = ({
   value, key, depth, status, type,
 }) => {
   const lastKey = key[key.length - 1];
   const sign = statusSign[status] || '';
-  const whiteSpace = ' ';
-  const indentSign = depth > 0 ? whiteSpace.repeat(depth - 2) : whiteSpace.repeat(depth);
-
-  const putIndent = diffSign => (diffSign ? indentSign : whiteSpace.repeat(depth));
+  const indent = whiteSpace.repeat(depth);
+  const putIndent = diffSign => (diffSign ? indent : whiteSpace.repeat(depth + whiteSpaceAmount));
   const renderArray = (itemKey) => {
     if (isNum(itemKey)) {
       return ['[\n', ...value.map(el => defaultRender(el)), '\n]'].join('');
@@ -55,7 +56,6 @@ const defaultRender = ({
   };
   return rendersByType[type]();
 };
-
 
 const plainText = {
   added: (key, value) => `Property '${key}' was added with value: '${value}'`,
