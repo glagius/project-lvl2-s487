@@ -2,7 +2,6 @@ import fs from 'fs';
 import genDiff from '..';
 
 const getText = filepath => fs.readFileSync(filepath, 'utf8');
-
 describe('Test renders output', () => {
   test.each`
   fileType  | renderType

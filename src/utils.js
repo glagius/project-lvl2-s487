@@ -2,7 +2,6 @@ import path from 'path';
 import readJSON from './types/jsonType';
 import readYML from './types/yamlType';
 import readINI from './types/iniType';
-import { parseItem, compareNodes } from './parser';
 
 const getCurrentPath = filepath => (
   path.isAbsolute(filepath)
@@ -17,11 +16,16 @@ const getFileType = (filepath) => {
   };
   return type ? classesByType[type]() : false;
 };
+// TODO: move it to "compareData";
+// const isEqualNodes = (node1, node2, property) => {
+//   const props = {
+//     type: () => node1.type === node2.type,
+//     path: () => parsePath(node1.key) === parsePath(node2.key),
+//     value: () => node1.type === node2.type && node1.type === 'simple' && node1.value === node2.value,
+//   };
+//   return props[property]();
+// };
 
-const getComparedDiff = (filepath1, filepath2) => {
-  const firstConfig = getFileType(getCurrentPath(filepath1));
-  const secondConfig = getFileType(getCurrentPath(filepath2));
-  if (!firstConfig || !secondConfig) throw new Error('Bad filetype');
-  return compareNodes(parseItem(firstConfig), parseItem(secondConfig));
-};
-export default getComparedDiff;
+const readFile = filepath => getFileType(getCurrentPath(filepath));
+
+export { readFile };

@@ -1,12 +1,12 @@
-import getComparedDiff from './utils';
-import renderNode from './renders';
+import renderDiff from './renders';
+// import { compareData } from './parser';
+import { readFile } from './utils';
 
-export default (...args) => {
-  const [first, second, format] = args;
-  const renderType = format || 'default';
-  if (!second || !first) throw new Error('Bad filepath');
+export default (path1, path2, format = 'plain') => {
+  if (!path1 || !path2) throw new Error('Need at least 2 filepaths');
 
-  const diff = getComparedDiff(first, second);
-  if (renderType === 'json') return renderNode(diff, renderType);
-  return renderNode(diff, renderType);
+  const parsedContents = [path1, path2].map(readFile);
+  const comparedDiff = compareData(...parsedContents);
+
+  return renderDiff(comparedDiff, format);
 };

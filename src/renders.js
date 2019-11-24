@@ -8,7 +8,7 @@ const isNum = str => typeof str === 'number';
 const whiteSpaceAmount = 2;
 const whiteSpace = ' ';
 
-const defaultRender = ({
+const nestedRender = ({
   value, key, depth, status, type,
 }) => {
   const lastKey = key[key.length - 1];
@@ -17,11 +17,11 @@ const defaultRender = ({
   const putIndent = diffSign => (diffSign ? indent : whiteSpace.repeat(depth + whiteSpaceAmount));
   const renderArray = (itemKey) => {
     if (isNum(itemKey)) {
-      return ['[\n', ...value.map(el => defaultRender(el)), '\n]'].join('');
+      return ['[\n', ...value.map(el => nestedRender(el)), '\n]'].join('');
     }
     return [
       `\n${putIndent(sign)}${sign}${itemKey}: [`,
-      ...value.map(el => defaultRender(el)),
+      ...value.map(el => nestedRender(el)),
       `\n${putIndent(null)}]`,
     ].join('');
   };
@@ -29,13 +29,13 @@ const defaultRender = ({
     if (isNum(itemKey)) {
       return [
         `\n${putIndent(sign)}${sign}{`,
-        ...value.map(el => defaultRender(el)),
+        ...value.map(el => nestedRender(el)),
         `\n${putIndent(null)}}`,
       ].join('');
     }
     return [
       `\n${putIndent(sign)}${sign}${lastKey}: {`,
-      ...value.map(el => defaultRender(el)),
+      ...value.map(el => nestedRender(el)),
       `\n${putIndent(null)}}`,
     ].join('');
   };
@@ -46,7 +46,7 @@ const defaultRender = ({
     return `\n${putIndent(sign)}${sign}${lastKey}: ${value}`;
   };
   if (lastKey === '/') {
-    const result = ['{', ...value.map(el => defaultRender(el)), '\n}'].join('');
+    const result = ['{', ...value.map(el => nestedRender(el)), '\n}'].join('');
     return result;
   }
   const rendersByType = {
@@ -94,11 +94,11 @@ const plainRender = (config) => {
 
 const getJSON = config => JSON.stringify(config);
 
-export default (node, renderType) => {
+export default (diff, renderType) => {
   const renderMethods = {
-    default: defaultRender,
+    nested: nestedRender,
     plain: plainRender,
     json: getJSON,
   };
-  return renderMethods[renderType](node);
+  return renderMethods[renderType](diff);
 };
