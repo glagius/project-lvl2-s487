@@ -9,7 +9,6 @@ program
   .description('Compares two configuration files and shows a difference.')
   .arguments('<firstConfig> <secondConfig>')
   .option('-f, --format <type>', 'Output format. Can be "nested", "plain", "json"')
-  // TODO: anyway must return value.
   .action((path1, path2, { format }) => generateDiff(path1, path2, format))
   .parse(process.argv);
 if (!program.args.length) program.help();
