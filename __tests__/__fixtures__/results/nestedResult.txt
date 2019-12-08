@@ -1,0 +1,30 @@
+{
+    url: .*kitchenaid.com/.*/(cart|checkout).*
+  - total: 8979
+  + total: 89
+  - orderTotal: 789876
+  + orderTotal: 76
+    product: {
+      - productName: Apple MacBook
+        year: 2019
+        models: {
+            air: {
+                price: 190000
+            }
+            pro: {
+              - price: 290000
+              + price: 150000
+              + discount: true
+              + best-price: true
+            }
+        }
+        options: {
+          - option1: one
+          + option1: four
+          - option2: two
+          + option2: four
+          + option3: four
+        }
+    }
+  + season: Summer
+}

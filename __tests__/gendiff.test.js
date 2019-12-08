@@ -4,17 +4,17 @@ import genDiff from '..';
 const getText = filepath => fs.readFileSync(filepath, 'utf8');
 describe('Test renders output', () => {
   test.each`
-  fileType  | renderType
-  ${'json'} | ${'default'}
+  fileType  | renderFormat
+  ${'json'} | ${'nested'}
   ${'json'} | ${'plain'}
-  ${'yml'}  | ${'default'}
+  ${'yml'}  | ${'nested'}
   ${'yml'}  | ${'plain'}
-  ${'ini'}  | ${'default'}
-  ${'ini'}  | ${'plain'}`('Render $renderType type of $fileType diff', ({ fileType, renderType }) => {
+  ${'ini'}  | ${'nested'}
+  ${'ini'}  | ${'plain'}`('Render $renderFormat type of $fileType diff', ({ fileType, renderFormat }) => {
   const oldFile = `./__tests__/__fixtures__/${fileType}/oldConfig.${fileType}`;
   const newFile = `./__tests__/__fixtures__/${fileType}/newConfig.${fileType}`;
-  const comparedDiff = genDiff(oldFile, newFile, renderType);
-  expect(comparedDiff).toBe(getText(`./__tests__/__fixtures__/results/${renderType}Result.txt`));
+  const comparedDiff = genDiff(oldFile, newFile, renderFormat);
+  expect(comparedDiff).toBe(getText(`./__tests__/__fixtures__/results/${renderFormat}Result.txt`));
 });
 });
 describe('Test engine workflow', () => {
