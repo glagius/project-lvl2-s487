@@ -1,104 +1,37 @@
-import { parsePath } from './parser';
+const renderNestedDiff = (object, depth) => {
+  const indentSize = 4;
+  const indentType = ' ';
+  const getIndent = num => indentType.repeat(num);
+  const keys = Object.keys(object);
 
-const statusSign = {
-  added: '+ ',
-  removed: '- ',
-};
-const isNum = str => typeof str === 'number';
-const whiteSpaceAmount = 2;
-const whiteSpace = ' ';
+  const renderItem = (key, value, status) => {
+    const statusSign = {
+      added: `${getIndent((depth * indentSize) - (indentSize / 2))}+ `,
+      removed: `${getIndent((depth * indentSize) - (indentSize / 2))}- `,
+      unchanged: getIndent(depth * indentSize),
+    };
+    const currentIndent = statusSign[status || 'unchanged'];
+    if (typeof value !== 'object') {
+      return [currentIndent, `${key}: `, `${value}`].filter(Boolean).join('');
+    }
+    if (Array.isArray(value)) {
+      return value.map(el => renderItem(key, el.value, el.status)).join('\n');
+    }
+    return [currentIndent, `${key}: `, '{\n', renderNestedDiff(value, depth + 1), `\n${currentIndent}}`].filter(Boolean).join('');
+  };
 
-const nestedRender = ({
-  value, key, depth, status, type,
-}) => {
-  const lastKey = key[key.length - 1];
-  const sign = statusSign[status] || '';
-  const indent = whiteSpace.repeat(depth);
-  const putIndent = diffSign => (diffSign ? indent : whiteSpace.repeat(depth + whiteSpaceAmount));
-  const renderArray = (itemKey) => {
-    if (isNum(itemKey)) {
-      return ['[\n', ...value.map(el => nestedRender(el)), '\n]'].join('');
-    }
-    return [
-      `\n${putIndent(sign)}${sign}${itemKey}: [`,
-      ...value.map(el => nestedRender(el)),
-      `\n${putIndent(null)}]`,
-    ].join('');
-  };
-  const renderObject = (itemKey) => {
-    if (isNum(itemKey)) {
-      return [
-        `\n${putIndent(sign)}${sign}{`,
-        ...value.map(el => nestedRender(el)),
-        `\n${putIndent(null)}}`,
-      ].join('');
-    }
-    return [
-      `\n${putIndent(sign)}${sign}${lastKey}: {`,
-      ...value.map(el => nestedRender(el)),
-      `\n${putIndent(null)}}`,
-    ].join('');
-  };
-  const renderSimple = (itemKey) => {
-    if (isNum(itemKey)) {
-      return `\n${putIndent(sign)}${sign}${value}`;
-    }
-    return `\n${putIndent(sign)}${sign}${lastKey}: ${value}`;
-  };
-  if (lastKey === '/') {
-    const result = ['{', ...value.map(el => nestedRender(el)), '\n}'].join('');
-    return result;
-  }
-  const rendersByType = {
-    object: () => renderObject(lastKey),
-    array: () => renderArray(lastKey),
-    simple: () => renderSimple(lastKey),
-  };
-  return rendersByType[type]();
+  const items = keys.reduce((acc, key) => [
+    ...acc,
+    renderItem(key, object[key], object[key].status),
+  ], []).join('\n');
+  return depth === 1 ? ['{\n', items, '\n}'].join('') : items;
 };
 
-const plainText = {
-  added: (key, value) => `Property '${key}' was added with value: '${value}'`,
-  removed: key => `Property '${key}' was removed`,
-  changed: (key, ...values) => {
-    const [oldValue, newValue] = values;
-    return `Property '${key}' was updated. From '${oldValue}' to '${newValue}'`;
-  },
-};
-const plainRender = (config) => {
-  const checkedList = config.value.map((item, index) => {
-    if (item.type !== 'simple') return plainRender(item);
-    const key = parsePath(item.key);
-    let changedNode;
-    switch (item.status) {
-      case 'removed':
-        changedNode = config.value
-          .filter((el, ind) => ind !== index)
-          .find(el => parsePath(el.key) === key);
-        if (changedNode && item.value !== changedNode.value) {
-          return plainText.changed(key, item.value, changedNode.value);
-        }
-        return plainText[item.status] && plainText[item.status](key, item.value);
-      case 'added':
-        changedNode = config.value.find(
-          el => parsePath(el.key) === key && el.status === 'removed',
-        );
-        if (changedNode) return null;
-        return plainText[item.status] && plainText[item.status](key, item.value);
-      default:
-        return null;
-    }
-  });
-  return checkedList.filter(el => el).join('\n');
-};
-
-const getJSON = config => JSON.stringify(config);
-
-export default (diff, renderType) => {
-  const renderMethods = {
-    nested: nestedRender,
-    plain: plainRender,
-    json: getJSON,
+export default (obj, format) => {
+  const renderFormats = {
+    plain: () => { },
+    nested: () => renderNestedDiff(obj, 1),
+    json: () => { },
   };
-  return renderMethods[renderType](diff);
+  return renderFormats[format](obj);
 };
