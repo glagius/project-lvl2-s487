@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import fs from 'fs';
 import genDiff from '..';
 
