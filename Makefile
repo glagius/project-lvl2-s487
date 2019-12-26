@@ -14,7 +14,7 @@ test:
 	npm test
 
 test-coverage:
-	npm test -- --coverage
+	npm test --coverage
 
 publish: lint
 	npm publish
