@@ -1,5 +1,3 @@
-import { getKeys, cleanArray } from './utils';
-
 const addIndent = (depth, status = 'unchanged') => {
   const indentSize = 4;
   const indentType = ' ';
@@ -13,7 +11,7 @@ const addIndent = (depth, status = 'unchanged') => {
   return statusSign[status];
 };
 const renderObject = (obj, depth, status = 'unchanged') => {
-  const keys = getKeys(obj);
+  const keys = Object.keys(obj);
   return keys.map(key => (typeof obj[key] !== 'object'
     ? [addIndent(depth, status), `${key}: `, `${obj[key]}`].filter(Boolean).join('')
     : [addIndent(depth, status), `${key}: `, '{\n', ...renderObject(obj[key], depth + 1).join('\n'), `\n${addIndent(depth)}}`].filter(Boolean).join('')));
@@ -40,10 +38,8 @@ const renderNestedDiff = (item, formatter, depth = 0) => {
   const nodeStatus = {
     unchanged: () => (children
       ? [`${addIndent(depth, status)}${[key]}: `,
-        '{\n',
-        children.map(el => renderNestedDiff(el, formatter, depth + 1))
-          .join('\n'),
-        `\n${addIndent(depth)}}`].join('')
+        '{\n', children.map(el => renderNestedDiff(el, formatter, depth + 1))
+          .join('\n'), `\n${addIndent(depth)}}`].join('')
       : formatter({ [key]: value }, depth, status)),
     added: () => formatter({ [key]: value }, depth, status),
     removed: () => formatter({ [key]: value }, depth, status),
@@ -57,10 +53,10 @@ const renderPlainDiff = (item, formatter, parents = []) => {
   const {
     key, children, changes, status,
   } = item;
-  const propPath = cleanArray([...parents, key && convertProperty(key)]);
+  const propPath = [...parents, key && convertProperty(key)].filter(el => !!el);
   const itemChangeDescription = getItemChangesDescription(changes, propPath, status);
   return children
-    ? cleanArray(children.map(node => renderPlainDiff(node, formatter, propPath))).join('\n')
+    ? children.map(node => renderPlainDiff(node, formatter, propPath)).filter(el => !!el).join('\n')
     : itemChangeDescription;
 };
 
@@ -68,7 +64,7 @@ export default (obj, format) => {
   const renderFormats = {
     plain: () => renderPlainDiff(obj, getItemChangesDescription),
     nested: () => renderNestedDiff(obj, renderObject),
-    json: () => JSON.stringify(obj),
+    json: () => JSON.parse(JSON.stringify(obj)),
   };
   return renderFormats[format](obj);
 };
