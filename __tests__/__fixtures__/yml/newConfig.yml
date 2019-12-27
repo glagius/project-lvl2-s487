@@ -4,9 +4,10 @@ orderTotal: 76
 season: 'Summer'
 product:
   year: 2019
+  cashback:
+    discount: '25%'
   models:
-    air:
-      price: 190000
+    air: false
     pro:
       price: 150000
       discount: true

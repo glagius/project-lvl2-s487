@@ -7,10 +7,15 @@
     product: {
       - productName: Apple MacBook
         year: 2019
+      - cashback: false
+      + cashback: {
+            discount: 25%
+        }
         models: {
-            air: {
+          - air: {
                 price: 190000
             }
+          + air: false
             pro: {
               - price: 290000
               + price: 150000

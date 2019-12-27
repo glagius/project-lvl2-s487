@@ -5,6 +5,7 @@
   "product": {
     "productName": "Apple MacBook",
     "year": 2019,
+    "cashback": false,
     "models": {
       "air": {
         "price": 190000
