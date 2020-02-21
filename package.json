@@ -1,7 +1,10 @@
 {
   "name": "elb-check_diff",
-  "version": "1.4.1",
   "description": "Hexlet second project",
+  "author": "Babaev Eldar",
+  "license": "MIT",
+  "version": "1.4.2",
+  "homepage": "https://github.com/BabayevEldar/project-lvl2-s487#readme",
   "main": "dist/index.js",
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
@@ -22,12 +25,9 @@
     "diff-generator",
     "hexlet"
   ],
-  "author": "Babaev Eldar",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/BabayevEldar/project-lvl2-s487/issues"
   },
-  "homepage": "https://github.com/BabayevEldar/project-lvl2-s487#readme",
   "devDependencies": {
     "@babel/cli": "^7.7.7",
     "@babel/core": "^7.7.7",
