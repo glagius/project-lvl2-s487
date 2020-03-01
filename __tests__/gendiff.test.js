@@ -1,7 +1,7 @@
 import fs from 'fs';
-import genDiff from '..';
+import genDiff from '../src';
 
-const getFilePath = (fileType, contentType) => {
+const getFilePath = (contentType, fileType) => {
   if (fileType === 'txt') return `./__tests__/__fixtures__/results/${contentType}.${fileType}`;
   return `./__tests__/__fixtures__/${contentType}/config.${fileType}`;
 };
@@ -16,18 +16,18 @@ describe('Test renders output', () => {
     ['nested', 'ini'],
     ['plain', 'ini'],
   ])('Render %s diff of %s files', (renderFormat, fileType) => {
-    const oldContent = getFilePath(fileType, 'oldConfig');
-    const newContent = getFilePath(fileType, 'newConfig');
+    const oldContent = getFilePath('oldConfig', fileType);
+    const newContent = getFilePath('newConfig', fileType);
     const comparedDiff = genDiff(oldContent, newContent, renderFormat);
-    expect(comparedDiff).toBe(getText(getFilePath('txt', renderFormat)));
+    expect(comparedDiff).toBe(getText(getFilePath(renderFormat, 'txt')));
   });
 });
 describe('Test engine workflow', () => {
   test('Get AST in JSON', async () => {
-    const oldContent = getFilePath('json', 'oldConfig');
-    const newContent = getFilePath('json', 'newConfig');
-    const stringifiedJSON = getText(getFilePath('txt', 'json'));
+    const oldContent = getFilePath('oldConfig', 'json');
+    const newContent = getFilePath('newConfig', 'json');
+    const stringifiedAST = getText(getFilePath('json', 'txt'));
     const comparedConfig = genDiff(oldContent, newContent, 'json');
-    expect(JSON.stringify(comparedConfig)).toBe(stringifiedJSON);
+    expect(comparedConfig).toBe(stringifiedAST);
   });
 });
