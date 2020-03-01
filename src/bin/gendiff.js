@@ -11,7 +11,8 @@ program
   .option('-f, --format <type>', 'Output format. Can be "nested", "plain", "json"')
   .action((path1, path2, { format }) => {
     if (!path1 || !path2) throw new Error('Need at least 2 filepaths');
-    generateDiff(path1, path2, format);
+    if (format === 'json') return generateDiff(path1, path2, format);
+    return console.log(generateDiff(path1, path2, format));
   })
   .parse(process.argv);
 if (!program.args.length) program.help();

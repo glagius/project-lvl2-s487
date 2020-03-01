@@ -55,7 +55,7 @@ const compare = (oldContent, newContent) => {
   });
 };
 
-export default (path1, path2, format = 'plain') => {
+export default (path1, path2, format = 'nested') => {
   const filesContent = [path1, path2].map((datapath) => getContent(datapath));
   const ast = compare(...filesContent);
   return render(format, ast);
