@@ -1,5 +1,5 @@
 import fs from 'fs';
-import genDiff from '../src';
+import genDiff from '..';
 
 const getFilePath = (contentType, fileType) => {
   if (fileType === 'txt') return `./__tests__/__fixtures__/results/${contentType}.${fileType}`;
