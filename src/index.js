@@ -1,15 +1,9 @@
-import fs from 'fs';
 import path from 'path';
-import yaml from 'js-yaml';
-import ini from 'ini';
-import { has, isObject } from 'lodash';
+import * as _ from 'lodash';
+import { readINI, readJSON, readYAML } from './parsers';
 import render from './formatters';
 
 const getCurrentPath = (filepath) => path.resolve(filepath);
-
-const readJSON = (filepath) => JSON.parse(fs.readFileSync(filepath));
-const readYAML = (filepath) => yaml.safeLoad(fs.readFileSync(filepath, 'utf8'));
-const readINI = (filepath) => ini.parse(fs.readFileSync(filepath, 'utf8'));
 
 const getContent = (contentPath) => {
   const filepath = getCurrentPath(contentPath);
@@ -21,42 +15,35 @@ const getContent = (contentPath) => {
   };
   return type ? conventers[type](filepath) : new Error('Wrong "filepath"');
 };
-const makeNode = ({
-  name = '', value = '', parent = null, ...options
-}) => ({
-  name,
-  value,
-  parent,
-  hasChildren: typeof value === 'object',
-  ...options,
-});
+
 const compareValues = (obj1, obj2, key) => {
-  if (!has(obj1, key)) return { status: 'added', changes: [{ value: obj2[key], status: 'added' }] };
-  if (!has(obj2, key)) return { status: 'removed', changes: [{ value: obj1[key], status: 'removed' }] };
-  if (obj1[key] === obj2[key]) return { status: 'unchanged', changes: null };
-  if (typeof obj1[key] === typeof obj2[key] && isObject(obj1[key])) return { status: 'unchanged', changes: null };
-  return { status: 'changed', changes: [{ value: obj1[key], status: 'removed' }, { value: obj2[key], status: 'added' }] };
+  if (!_.has(obj1, key)) return { status: 'added', newValue: obj2[key] };
+  if (!_.has(obj2, key)) return { status: 'removed', oldValue: obj1[key] };
+  if (obj1[key] === obj2[key] || (
+    _.isObject(obj1[key]) && _.isObject(obj2[key])
+  )) return { status: 'unchanged', oldValue: obj1[key] };
+  return { status: 'changed', oldValue: obj1[key], newValue: obj2[key] };
 };
 
-const compare = (oldContent, newContent) => {
-  const mergedObject = { ...oldContent, ...newContent };
-  return Object.keys(mergedObject).map((key) => {
-    const changes = compareValues(oldContent, newContent, key);
-    if (isObject(mergedObject[key])) {
-      const children = compare(oldContent[key], newContent[key]);
-      return makeNode({
-        name: key,
-        value: mergedObject[key],
-        children: children.map((child) => ({ ...child, parent: key })),
+const compare = (oldObject, newObject) => {
+  const keys = _.union(_.keys(oldObject), _.keys(newObject));
+  return keys.map((key) => {
+    const changes = compareValues(oldObject, newObject, key);
+    if (typeof newObject[key] === 'object') {
+      const children = compare(oldObject[key], newObject[key]);
+      return {
+        key,
         ...changes,
-      });
+        children: children.map((child) => ({ ...child, parent: key })),
+      };
     }
-    return makeNode({ name: key, value: mergedObject[key], ...changes });
+    return { key, ...changes };
   });
 };
 
 export default (path1, path2, format = 'nested') => {
-  const filesContent = [path1, path2].map((datapath) => getContent(datapath));
-  const ast = compare(...filesContent);
+  const oldConfig = getContent(path1);
+  const newConfig = getContent(path2);
+  const ast = compare(oldConfig, newConfig);
   return render(format, ast);
 };
