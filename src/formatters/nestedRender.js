@@ -1,4 +1,4 @@
-import { isObject } from 'lodash';
+import * as _ from 'lodash';
 
 const addIndent = (depth, status = 'unchanged') => {
   const indentSize = 4;
@@ -12,41 +12,39 @@ const addIndent = (depth, status = 'unchanged') => {
   };
   return statusSign[status];
 };
-const valueToString = ({ name, value }, depthLevel, status = 'changed') => {
-  const keys = isObject(value) ? Object.keys(value) : null;
-  if (keys) {
+const valueToString = ({ key, value, status = 'unchanged' }, depthLevel) => {
+  const keys = _.isObject(value) ? _.keys(value) : null;
+  if (_.isObject(value)) {
     return [
       addIndent(depthLevel, status),
-      `${name}: `,
+      `${key}: `,
       '{\n',
-      keys.map((key) => valueToString({ name: key, value: value[key] }, depthLevel + 1)).join('\n'),
+      keys.map((valueKey) => valueToString({ key: valueKey, value: value[valueKey] }, depthLevel + 1)).join('\n'),
       `\n${addIndent(depthLevel)}}`].join('');
   }
-  return [addIndent(depthLevel, status), `${name}: `, `${value}`].join('');
+  return [addIndent(depthLevel, status), `${key}: `, `${value}`].join('');
 };
 const getNodeChanges = (node, parents = []) => {
   const depthStep = 1;
   const depth = parents.length + depthStep;
   const {
-    name, value, children, status, changes,
+    key, oldValue, newValue, status, children,
   } = node;
 
   const nodeToString = () => {
-    const type = isObject(value) ? 'object' : 'string';
+    const value = oldValue || newValue;
+    const type = _.isObject(value) ? 'object' : 'string';
     const stringTypes = {
-      string: () => [addIndent(depth, status), `${name}: `, `${value}`],
-      object: () => [addIndent(depth, status), `${name}: `, '{\n', ...children.map((child) => getNodeChanges(child, [...parents, child.parent])).join('\n'), `\n${addIndent(depth)}}`],
+      string: () => valueToString({ key, value, status }, depth),
+      object: () => [addIndent(depth, status), `${key}: `, '{\n', ...children.map((child) => getNodeChanges(child, [...parents, child.parent])).join('\n'), `\n${addIndent(depth)}}`].join(''),
     };
-    return stringTypes[type]().join('');
+    return stringTypes[type]();
   };
   if (status === 'changed') {
-    return changes.reduce((acc, modification) => {
-      const { value: modificationValue, status: modificationStatus } = modification;
-      return [
-        ...acc,
-        valueToString({ name, value: modificationValue }, depth, modificationStatus),
-      ];
-    }, []).join('\n');
+    return [
+      { value: oldValue, change: 'removed' },
+      { value: newValue, change: 'added' },
+    ].map(({ value, change }) => valueToString({ key, value, status: change }, depth)).join('\n');
   }
   return nodeToString();
 };

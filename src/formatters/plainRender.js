@@ -1,28 +1,27 @@
-import { isObject } from 'lodash';
+import * as _ from 'lodash';
 
-const convertValue = (val) => (isObject(val) ? '[complex-value]' : val);
+const convertValue = (val) => (_.isObject(val) ? '[complex-value]' : val);
 const convertProperty = (prop) => (prop.includes('-') ? `['${prop}']` : prop);
 
 const getNodeChanges = (node, parents = []) => {
   const {
-    name, children, status, changes,
+    key, oldValue, newValue, status, children,
   } = node;
-  const propPath = [...parents, convertProperty(name)].filter((el) => !!el).join('.');
+  const propPath = [...parents, convertProperty(key)].filter((el) => !!el).join('.');
 
   const getNodeChangesDescription = () => {
     if (status === 'unchanged') return null;
-    const [firstValue, secondValue] = changes.map((el) => el.value);
-    const currentValue = secondValue || firstValue;
+    const currentValue = oldValue || newValue;
 
     const changeDescription = {
       removed: () => `Property '${propPath}' was removed`,
       added: () => `Property '${propPath}' was added with value: '${convertValue(currentValue)}'`,
-      changed: () => `Property '${propPath}' was updated. From '${convertValue(firstValue)}' to '${convertValue(secondValue)}'`,
+      changed: () => `Property '${propPath}' was updated. From '${convertValue(oldValue)}' to '${convertValue(newValue)}'`,
     };
     return changeDescription[status]();
   };
   return children
-    ? children.map((child) => getNodeChanges(child, [...parents, name])).filter((el) => !!el).join('\n')
+    ? children.map((child) => getNodeChanges(child, [...parents, key])).filter((el) => !!el).join('\n')
     : getNodeChangesDescription();
 };
 
