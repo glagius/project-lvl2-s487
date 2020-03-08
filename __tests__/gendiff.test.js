@@ -16,7 +16,8 @@ describe('Test renders output', () => {
   ])('Render %s diff of %s files', (renderFormat, fileType) => {
     const oldConfigPath = getFilePath('oldConfig', fileType);
     const newConfigPath = getFilePath('newConfig', fileType);
+    const result = getText(getFilePath(renderFormat, 'txt'));
     const comparedDiff = genDiff(oldConfigPath, newConfigPath, renderFormat);
-    expect(comparedDiff).toBe(getText(getFilePath(renderFormat, 'txt')));
+    expect(comparedDiff).toBe(result);
   });
 });
