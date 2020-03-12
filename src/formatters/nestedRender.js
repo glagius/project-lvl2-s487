@@ -24,9 +24,9 @@ const valueToString = ({ key, value, status = 'unchanged' }, depthLevel) => {
   }
   return [addIndent(depthLevel, status), `${key}: `, `${value}`].join('');
 };
-const getNodeChanges = (node, parents = []) => {
+const getNodeChanges = (node, depthLevel = 0) => {
   const depthStep = 1;
-  const depth = parents.length + depthStep;
+  const depth = depthLevel + depthStep;
   const {
     key, oldValue, newValue, status, children,
   } = node;
@@ -36,7 +36,7 @@ const getNodeChanges = (node, parents = []) => {
     const type = _.isObject(value) ? 'object' : 'string';
     const stringTypes = {
       string: () => valueToString({ key, value, status }, depth),
-      object: () => [addIndent(depth, status), `${key}: `, '{\n', ...children.map((child) => getNodeChanges(child, [...parents, child.parent])).join('\n'), `\n${addIndent(depth)}}`].join(''),
+      object: () => [addIndent(depth, status), `${key}: `, '{\n', ...children.map((child) => getNodeChanges(child, depth)).join('\n'), `\n${addIndent(depth)}}`].join(''),
     };
     return stringTypes[type]();
   };

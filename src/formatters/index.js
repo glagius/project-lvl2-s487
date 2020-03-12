@@ -1,11 +1,10 @@
 import nestedRender from './nestedRender';
 import plainRender from './plainRender';
 
-const jsonRender = (ast) => JSON.stringify(ast);
 const formatters = {
   nested: nestedRender,
   plain: plainRender,
-  json: jsonRender,
+  json: JSON.stringify,
 };
 
-export default (format, ast) => formatters[format](ast);
+export default (ast, format) => formatters[format](ast);
