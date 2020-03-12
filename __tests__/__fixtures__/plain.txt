@@ -1,7 +1,7 @@
 Property 'total' was updated. From '8979' to '89'
 Property 'orderTotal' was updated. From '789876' to '76'
 Property 'product.productName' was removed
-Property 'product.cashback.discount' was added with value: '25%'
+Property 'product.cashback' was updated. From 'false' to '[complex-value]'
 Property 'product.models.air' was updated. From '[complex-value]' to 'false'
 Property 'product.models.pro.price' was updated. From '290000' to '150000'
 Property 'product.models.pro.discount' was added with value: 'true'

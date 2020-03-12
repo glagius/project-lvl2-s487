@@ -1,7 +1,7 @@
 import fs from 'fs';
 import genDiff from '../src';
 
-const getFilePath = (contentType, fileType) => `./__tests__/__fixtures__/${fileType}/${contentType}.${fileType}`;
+const getFilePath = (contentType, fileType) => `./__tests__/__fixtures__/${contentType}.${fileType}`;
 const getText = (filepath) => fs.readFileSync(filepath, 'utf8');
 
 describe('Test renders output', () => {
