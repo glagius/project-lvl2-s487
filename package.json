@@ -3,7 +3,7 @@
   "description": "Hexlet second project",
   "author": "Babaev Eldar",
   "license": "MIT",
-  "version": "1.4.2",
+  "version": "1.4.5",
   "homepage": "https://github.com/BabayevEldar/project-lvl2-s487#readme",
   "main": "dist/index.js",
   "bin": {
