@@ -1,6 +1,6 @@
-import * as _ from 'lodash';
+import isObject from 'lodash/isObject';
 
-const convertValue = (val) => (_.isObject(val) ? '[complex-value]' : val);
+const convertValue = (val) => (isObject(val) ? '[complex-value]' : val);
 const convertProperty = (prop) => (prop.includes('-') ? `['${prop}']` : prop);
 
 const getNodeChanges = (node, parents = []) => {
@@ -10,15 +10,19 @@ const getNodeChanges = (node, parents = []) => {
   const propPath = [...parents, convertProperty(key)].filter((el) => !!el).join('.');
 
   const getNodeChangesDescription = () => {
-    if (status === 'unchanged') return null;
     const currentValue = oldValue || newValue;
-
-    const changeDescription = {
-      removed: () => `Property '${propPath}' was removed`,
-      added: () => `Property '${propPath}' was added with value: '${convertValue(currentValue)}'`,
-      changed: () => `Property '${propPath}' was updated. From '${convertValue(oldValue)}' to '${convertValue(newValue)}'`,
-    };
-    return changeDescription[status]();
+    switch (status) {
+      case 'removed':
+        return `Property '${propPath}' was removed`;
+      case 'added':
+        return `Property '${propPath}' was added with value: '${convertValue(currentValue)}'`;
+      case 'changed':
+        return `Property '${propPath}' was updated. From '${convertValue(oldValue)}' to '${convertValue(newValue)}'`;
+      case 'unchanged':
+        return null;
+      default:
+        return new Error(`Unexpected status: ${status}`);
+    }
   };
   return children
     ? children.map((child) => getNodeChanges(child, [...parents, key])).filter((el) => !!el).join('\n')
