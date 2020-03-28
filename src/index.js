@@ -33,6 +33,10 @@ const compare = (oldObject, newObject) => {
   const mergedKeys = union(keys(oldObject), keys(newObject));
   return mergedKeys.map((key) => {
     const changes = compareValues(oldObject, newObject, key);
+    if (isObject(newObject[key]) && isObject(oldObject[key])) {
+      const children = compare(oldObject[key], newObject[key]);
+      return { key, children, ...changes };
+    }
     return { key, ...changes };
   });
 };
