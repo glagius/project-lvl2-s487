@@ -9,16 +9,22 @@ import render from './formatters';
 
 const parseFilePath = (filepath) => {
   const absolutePath = path.resolve(filepath);
-  const filetype = path.extname(filepath) ? path.extname(filepath).slice(1) : null;
+  const filetype = path.extname(filepath).slice(1);
   return { absolutePath, filetype };
 };
 
 const compareValues = (obj1, obj2, key) => {
-  if (!has(obj1, key)) return { status: 'added', newValue: obj2[key] };
-  if (!has(obj2, key)) return { status: 'removed', oldValue: obj1[key] };
+  if (!has(obj1, key)) {
+    return { status: 'added', newValue: obj2[key] };
+  }
+  if (!has(obj2, key)) {
+    return { status: 'removed', oldValue: obj1[key] };
+  }
   if (obj1[key] === obj2[key] || (
     isObject(obj1[key]) && isObject(obj2[key])
-  )) return { status: 'unchanged', oldValue: obj1[key] };
+  )) {
+    return { status: 'unchanged', oldValue: obj1[key] };
+  }
   return { status: 'changed', oldValue: obj1[key], newValue: obj2[key] };
 };
 
