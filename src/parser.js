@@ -10,6 +10,6 @@ export default (content, type) => {
     case 'ini':
       return ini.parse(content);
     default:
-      return new Error('Wrong "filepath"');
+      throw new Error(`Unexpected content type: ${type}`);
   }
 };

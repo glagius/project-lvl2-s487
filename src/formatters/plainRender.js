@@ -1,6 +1,6 @@
-import isObject from 'lodash/isObject';
+import * as _ from 'lodash';
 
-const convertValue = (val) => (isObject(val) ? '[complex-value]' : val);
+const convertValue = (val) => (_.isObject(val) ? '[complex-value]' : val);
 const convertProperty = (prop) => (prop.includes('-') ? `['${prop}']` : prop);
 
 const getNodeChanges = (node, parents = []) => {
@@ -21,7 +21,7 @@ const getNodeChanges = (node, parents = []) => {
       case 'unchanged':
         return null;
       default:
-        return new Error(`Unexpected status: ${status}`);
+        throw new Error(`Unexpected status: ${status}`);
     }
   };
   return children

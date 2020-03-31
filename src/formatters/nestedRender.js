@@ -1,4 +1,4 @@
-import isObject from 'lodash/isObject';
+import * as _ from 'lodash';
 
 const addIndent = (depth = 1, status = 'unchanged') => {
   const indentSize = 4;
@@ -17,7 +17,7 @@ const addIndent = (depth = 1, status = 'unchanged') => {
 const stringifyObject = (node = {}, depth = 1, status = 'unchanged') => {
   const keys = Object.keys(node);
   return keys.reduce((acc, key) => {
-    if (isObject(node[key])) {
+    if (_.isObject(node[key])) {
       return [
         ...acc,
         `${addIndent(depth, status)}${key}: {`,
@@ -46,7 +46,7 @@ const stringifyAST = (ast = [], depth = 1) => ast.map((node) => {
     case 'changed':
       return [stringifyObject({ [key]: oldValue }, depth, 'removed'), stringifyObject({ [key]: newValue }, depth, 'added')].join('\n');
     default:
-      return new Error(`Found wrong status: ${status} !`);
+      throw new Error(`Unexpected status: ${status}`);
   }
 }).join('\n');
 

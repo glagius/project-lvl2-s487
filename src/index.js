@@ -1,7 +1,4 @@
-import has from 'lodash/has';
-import union from 'lodash/union';
-import keys from 'lodash/keys';
-import isObject from 'lodash/isObject';
+import * as _ from 'lodash';
 import path from 'path';
 import fs from 'fs';
 
@@ -14,29 +11,26 @@ const parseFilePath = (filepath) => {
   return { absolutePath, filetype };
 };
 
-const compareValues = (obj1, obj2, key) => {
-  if (!has(obj1, key)) {
-    return { status: 'added', newValue: obj2[key] };
-  }
-  if (!has(obj2, key)) {
-    return { status: 'removed', oldValue: obj1[key] };
-  }
-  if (obj1[key] === obj2[key] || (
-    isObject(obj1[key]) && isObject(obj2[key])
-  )) {
-    return { status: 'unchanged', oldValue: obj1[key] };
-  }
-  return { status: 'changed', oldValue: obj1[key], newValue: obj2[key] };
-};
 
 const compare = (oldObject, newObject) => {
-  const mergedKeys = union(keys(oldObject), keys(newObject));
+  const compareValues = (obj1, obj2, key) => {
+    if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
+      return { status: 'unchanged', children: compare(obj1[key], obj2[key]) };
+    }
+    if (!_.has(obj1, key)) {
+      return { status: 'added', newValue: obj2[key] };
+    }
+    if (!_.has(obj2, key)) {
+      return { status: 'removed', oldValue: obj1[key] };
+    }
+    if (obj1[key] === obj2[key]) {
+      return { status: 'unchanged', oldValue: obj1[key] };
+    }
+    return { status: 'changed', oldValue: obj1[key], newValue: obj2[key] };
+  };
+  const mergedKeys = _.union(_.keys(oldObject), _.keys(newObject));
   return mergedKeys.map((key) => {
     const changes = compareValues(oldObject, newObject, key);
-    if (isObject(newObject[key]) && isObject(oldObject[key])) {
-      const children = compare(oldObject[key], newObject[key]);
-      return { key, children, ...changes };
-    }
     return { key, ...changes };
   });
 };
