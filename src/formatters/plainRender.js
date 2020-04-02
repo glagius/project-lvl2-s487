@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 const convertValue = (val) => (_.isObject(val) ? '[complex-value]' : val);
 const convertProperty = (prop) => (prop.includes('-') ? `['${prop}']` : prop);

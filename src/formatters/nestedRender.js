@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 const addIndent = (depth = 1, status = 'unchanged') => {
   const indentSize = 4;

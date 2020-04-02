@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import path from 'path';
 import fs from 'fs';
 
@@ -18,9 +18,6 @@ const compare = (oldObject, newObject, func) => {
   });
 };
 const compareValues = (obj1, obj2, key) => {
-  if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
-    return { status: 'unchanged', children: compare(obj1[key], obj2[key], compareValues) };
-  }
   if (!_.has(obj1, key)) {
     return { status: 'added', newValue: obj2[key] };
   }
@@ -29,6 +26,9 @@ const compareValues = (obj1, obj2, key) => {
   }
   if (obj1[key] === obj2[key]) {
     return { status: 'unchanged', oldValue: obj1[key] };
+  }
+  if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
+    return { status: 'unchanged', children: compare(obj1[key], obj2[key], compareValues) };
   }
   return { status: 'changed', oldValue: obj1[key], newValue: obj2[key] };
 };
